@@ -56,7 +56,30 @@ public class SocketServer extends Thread{
 
 class RequestHandler extends Thread
 { 
-    //open streams
+    private Socket clientSocket;
+    RequestHandler(Socket clientSocket)
+    {
+      this.clientSocket = clientSocket;
 }
-  
+
+      public void start()
+      {
+            try
+            {
+            System.out.println("Connection Accepted");
+                  //open input (in) and output (out) streams  
+                  
+                //do request
+                
+                in.close();
+                out.close();
+                clientSocket.close();
+                System.out.println("Connection has been closed");
+                }
+                catch( Exception e)
+                {
+                  System.out.println("Connection was not properly closed"); 
+                  }
+                  }
+                
   
