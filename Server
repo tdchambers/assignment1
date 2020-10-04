@@ -20,8 +20,8 @@ public class SocketServer extends Thread{
         while(isRunning){
             try {
                 System.out.println("waiting for a connection");
-                Socket clientSocket = this.serverSocket.accept();
-                RequestHandler requestHandler = new RequestHandler(clientSocket);
+                Socket socket = this.serverSocket.accept();
+                RequestHandler requestHandler = new RequestHandler(socket);
             } catch (IOException e) {
                 if(!isRunning) {
                     System.out.println("Server Stopped.") ;
@@ -56,10 +56,10 @@ public class SocketServer extends Thread{
 
 class RequestHandler extends Thread
 { 
-    private Socket clientSocket;
-    RequestHandler(Socket clientSocket)
+    private Socket socket;
+    RequestHandler(Socket socket)
     {
-      this.clientSocket = clientSocket;
+      this.socket = socket;
 }
 
       public void start()
@@ -67,13 +67,21 @@ class RequestHandler extends Thread
             try
             {
             System.out.println("Connection Accepted");
-                  //open input (in) and output (out) streams  
-                  
-                //do request
+                  DataInputStream din = new DataInputStream(socket.getInputStream());
+                  DataOutputStream dout = new DataOutputStream(socket.getOutputStream());
+                  BufferedReader br = newBufferedReader(new InputStreamReader());
+                  String str="";
+                  while(//client doesn't say stop)){
+                        
+                        str=din.readUTF();
+                        System.out.println("Client says:"+str);
+                        //do request ects
+                        }
+                        
                 
-                in.close();
-                out.close();
-                clientSocket.close();
+                din.close();
+                dout.close();
+                socket.close();
                 System.out.println("Connection has been closed");
                 }
                 catch( Exception e)
