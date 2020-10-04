@@ -1,21 +1,36 @@
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.PrintStream;
-import java.net.Socket;
+import java.io.*;
+import java.net.*;
+
 
 public class ClientSocket
 {
 	public static void main ( String[] args)
 	{
-	
-		try
+	 	try
 		{
+
+		Socket socket = new Socket (server, port);
+		InputStream din = new DataInputStream(socket.getInputStream());
+		OutputStream dout = new DataOutputStream(socket.getOutputStream());
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		
-        Socket socket = new Socket (server, port);
-        InputStream in = new PrintStream (socket.getInputStream());
-        OutputStream out = new BufferedReader( new InputStreamReader(socket.getOutputStream());
-        
+		String str1 = "";
+		String str2 ="";
+		
+		while(//client doesnt enter stop){
+			//do stuff
+		
+		System.out.println("server says:"+str2);
+		}
+		din.close();
+		dout.close();
+		socket.close();
+
         }
+	catch(Exception e)
+	{
+		System.out.println("Client server did not close properly");
+		
         }
         }
