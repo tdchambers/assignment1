@@ -1,0 +1,62 @@
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.io.IOException;
+
+public class SocketServer extends Thread{
+
+      private ServerSocket serverSocket;
+      private int port;
+      private boolean isRunning= false;
+
+    public SocketServer(int port){
+        this.port= port;
+    }
+
+    public void start(){
+        synchronized(this){
+        }
+        openServerSocket();
+    
+        while(isRunning){
+            try {
+                System.out.println("waiting for a connection");
+                Socket clientSocket = this.serverSocket.accept();
+                RequestHandler requestHandler = new RequestHandler(clientSocket);
+            } catch (IOException e) {
+                if(!isRunning) {
+                    System.out.println("Server Stopped.") ;
+                    return;
+                }
+                throw new RuntimeException(
+                    "Error accepting client connection", e);
+            }
+        }
+        System.out.println("Server Stopped.") ;
+    }
+
+
+    public synchronized void stopServer(){
+        this.isRunning = false;
+        try {
+            this.serverSocket.close();
+        } catch (IOException e) {
+            throw new RuntimeException("Error closing server", e);
+        }
+    }
+
+    private void openServerSocket() {
+        try {
+            this.serverSocket = new ServerSocket(this.serverPort);
+        } catch (IOException e) {
+            throw new RuntimeException("Cannot open port XXXX", e);
+        }
+    }
+
+}
+
+class RequestHandler extends Thread
+{ 
+    //open streams
+}
+  
+  
