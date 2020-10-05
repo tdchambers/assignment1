@@ -6,31 +6,43 @@ import java.net.*;
 public class ClientSocket
 {
 	public static void main ( String[] args)
+
 	{
+	      String name = args[0];
+
+	      int port = Integer.parseInt(args[1]);
 	 	try
 		{
-
-		Socket socket = new Socket (server, port);
-		InputStream din = new DataInputStream(socket.getInputStream());
-		OutputStream dout = new DataOutputStream(socket.getOutputStream());
+		System.out.println("Conneting to server " +name+ " on port " + port);
+		Socket clientSocket = new Socket (name, port);
+		System.out.println("Connected");
+		InputStream din = new DataInputStream(clientSocket.getInputStream());
+		OutputStream dout = new DataOutputStream(clientSocket.getOutputStream());
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		
-		String str1 = "";
-		String str2 ="";
+		String line = "";
+		String serverResponse="";
+
+		while(!line.equals("Stop")){
 		
-		while(//client doesnt enter stop){
-			//do stuff
+			line=br.readLine();
+			dout.writeUTF(line)
+			dout.flush();
+			serverResponse=din.readUTF();
+			if(!serverResponse =""
+			
+			}
 		
-		System.out.println("server says:"+str2);
-		}
+		
 		din.close();
 		dout.close();
-		socket.close();
+		clientSocket.close();
 
         }
 	catch(Exception e)
 	{
 		System.out.println("Client server did not close properly");
+		e.printStackTrace(); 
 		
         }
         }
