@@ -70,13 +70,18 @@ class RequestHandler extends Thread
                   DataOutputStream dout = new DataOutputStream(socket.getOutputStream());
                   BufferedReader br = newBufferedReader(new InputStreamReader());
                   String str="";
-                  while(//client doesn't say stop)){
+                  
+                  out.println("Enter a Request or "Stop" to end session: ");
+                  out.flush; 
+                  String line = in.readLine(); 
+                  while(line != "Stop"){
                         
-                        str=din.readUTF();
-                        System.out.println("Client says:"+str);
-                        //do request ects
-                        }
+                        //do requests and everything here
+                        out.println("Enter another Request or "Stop" to end session: ");
+                        out.flush(); 
+                        line = in.readLine()
                         
+                        }   
                 
                 din.close();
                 dout.close();
@@ -89,4 +94,14 @@ class RequestHandler extends Thread
                   }
                   }
                 
-  
+//running code
+SocketServer server = new SocketServer(port);
+new Thread(server).start();
+try {
+      Thread.sleep(50000);
+      }
+      catch(Exception e)
+      {
+            System.out.println(
+System.out.println("Server stopping").
+server.stop(); 
