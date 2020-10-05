@@ -85,6 +85,8 @@ class RequestHandler extends Thread
 
                         }
                         if(line.equals("GET"){
+                              line = din.readLine();
+                              
                         }
                         if(line.equals("REMOVE"){
                         }
