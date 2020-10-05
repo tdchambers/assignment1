@@ -10,30 +10,7 @@ public class SocketServer extends Thread{
     public SocketServer(int port){
         this.port= port;
     }
-
-    public void start(){
-        synchronized(this){
-        }
-        openServerSocket();
     
-        while(isRunning){
-            try {
-                System.out.println("waiting for a connection");
-                Socket socket = this.serverSocket.accept();
-                RequestHandler requestHandler = new RequestHandler(socket);
-            } catch (IOException e) {
-                if(!isRunning) {
-                    System.out.println("Server Stopped.") ;
-                    return;
-                }
-                throw new RuntimeException(
-                    "Error accepting client connection", e);
-            }
-        }
-        System.out.println("Server Stopped.") ;
-    }
-
-
     public synchronized void stopServer(){
         this.isRunning = false;
         try {
@@ -45,10 +22,33 @@ public class SocketServer extends Thread{
 
     private void openServerSocket() {
         try {
-            this.serverSocket = new ServerSocket(this.serverPort);
+            this.serverSocket = new ServerSocket(port);
+            this.start(); 
         } catch (IOException e) {
-            throw new RuntimeException("Cannot open port XXXX", e);
+            throw new RuntimeException("Cannot open port ", port);
         }
+    }
+
+    public void startRunning(){
+        synchronized(this){
+        }
+        openServerSocket();
+        isRunning = true; 
+        while(isRunning){
+            try {
+     
+                System.out.println("waiting for a connection");
+                Socket socket = this.serverSocket.accept();
+                RequestHandler requestHandler = new RequestHandler(socket);
+                requestHandler.start();
+            } catch (IOException e) {
+                e.printStackTrace();
+                }
+                throw new RuntimeException(
+                    "Error accepting client connection", e);
+            }
+        }
+        System.out.println("Server Stopped.") ;
     }
 
 }
@@ -61,7 +61,7 @@ class RequestHandler extends Thread
       this.socket = socket;
 }
 
-      public void start()
+      public void startRunning()
       {
             try
             {
@@ -69,18 +69,37 @@ class RequestHandler extends Thread
                   DataInputStream din = new DataInputStream(socket.getInputStream());
                   DataOutputStream dout = new DataOutputStream(socket.getOutputStream());
                   BufferedReader br = newBufferedReader(new InputStreamReader());
-                  String str="";
-                  
+                 
                   out.println("Enter a Request or "Stop" to end session: ");
                   out.flush; 
-                  String line = in.readLine(); 
-                  while(line != "Stop"){
-                        
-                        //do requests and everything here
-                        out.println("Enter another Request or "Stop" to end session: ");
-                        out.flush(); 
-                        line = in.readLine()
-                        
+                  String line = "";
+                  String code = "";
+                  while(!line.equals("Stop"){
+                        line = din.readLine();
+
+                        if(line.equals("SUBMIT"){
+                              //either do request here or make a new class
+                           
+                        }
+                        if(line.equals("UPDATE"){
+
+                        }
+                        if(line.equals("GET"){
+                        }
+                        if(line.equals("REMOVE"){
+                        }
+                        if(line.equals(""){
+                              dout.println("No request identified."
+                              dout.flush();
+                        }
+                        else{
+                              dout.println("Request not recognized."
+                              dout.flush();
+                              
+ 
+                        dout.println("Enter another Request or "Stop" to end session: ");
+                        dout.flush(); 
+                        din.flush()
                         }   
                 
                 din.close();
@@ -91,6 +110,7 @@ class RequestHandler extends Thread
                 catch( Exception e)
                 {
                   System.out.println("Connection was not properly closed"); 
+                  e.printStackTrace();
                   }
                   }
                 
@@ -102,6 +122,7 @@ try {
       }
       catch(Exception e)
       {
-            System.out.println(
-System.out.println("Server stopping").
-server.stop(); 
+            e.printStackTrace();
+            }
+            }
+server.stopServer(); 
