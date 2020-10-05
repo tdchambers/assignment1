@@ -1,5 +1,6 @@
 import java.net.*;
 import java.io.*; 
+import java.util.ArrayList;
 
 public class SocketServer extends Thread{
 
@@ -53,13 +54,22 @@ public class SocketServer extends Thread{
 
 }
 
-class RequestHandler extends Thread
+public class RequestHandler extends Thread
 { 
     private Socket socket;
     RequestHandler(Socket socket)
     {
       this.socket = socket;
 }
+
+      private String submitRequest(){
+      }
+      private String updateRequest(){
+      }
+      private String getRequest(){
+      }
+      private String removeRequest(){
+      }
 
       public void startRunning()
       {
@@ -73,24 +83,24 @@ class RequestHandler extends Thread
                   out.println("Enter a Request or "Stop" to end session: ");
                   out.flush; 
                   String line = "";
-                  String code = "";
                   while(!line.equals("Stop"){
                         line = din.readLine();
 
                         if(line.equals("SUBMIT"){
-                              //either do request here or make a new class
+                              return submitRequest();
                            
                         }
-                        if(line.equals("UPDATE"){
+                        else if(line.equals("UPDATE"){
+                              return updateRequest();
 
                         }
-                        if(line.equals("GET"){
-                              line = din.readLine();
-                              
+                        else if(line.equals("GET"){
+                              return getRequest();
                         }
-                        if(line.equals("REMOVE"){
+                        elese if(line.equals("REMOVE"){
+                              return removeRequest(); 
                         }
-                        if(line.equals(""){
+                       else if(line.equals(""){
                               dout.println("No request identified."
                               dout.flush();
                         }
