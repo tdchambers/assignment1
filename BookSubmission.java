@@ -3,7 +3,7 @@ public class BookSubmission{
 
   String author = "";
   String publisher = "";
-  int YEAR = "" ;
+  int YEAR = 0 ;
   String ISBN = ""; 
   
   //getter methods 
@@ -46,4 +46,9 @@ public class BookSubmission{
    public void setYEAR (int YEAR){
     this.YEAR = YEAR; }
    
-   }
+   
+//Method to return String version of a book entry 
+
+  public String ToString(){
+    return "Title: " + this.title + "\n" + "Author: " + this.author + "\n Publisher: " + this.publisher + "\n ISBN: " + this.ISBN + "\n  YEAR: " + this.YEAR }
+} 
