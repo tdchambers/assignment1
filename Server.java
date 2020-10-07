@@ -126,7 +126,29 @@ public class RequestHandler extends Thread
                   e.printStackTrace();
                   }
                   }
+                 
                   
+ public class mainServer{
+      public static void main(String[] args) throws IOException{
+            private boolean run = true; 
+            ArrayList<BookSubmission> bookSubmission = new ArrayList<BookSubmission>();
+            int port
+            if(args[0].length ==0) {
+            port =5000;
+            }
+            else port = Integer.parseInt(arg[0]);
+            ServerSocket = serverSocket = new ServerSocket(port);
+            System.out.println("Server is now running on port: " +port);
+            while (run){ //this part needs editing
+                  Socket clientSocket = serverSocket.accept();
+           
+                  SocketServer socketServer = new SocketServer(Thread.activeCount()+"",clientSocket,bookSubmission);
+                  socketServer.start();
+                  System.out.println("Connected"); 
+                  }
+           }
+       }
+
             
             
                 
