@@ -63,7 +63,49 @@ public class RequestHandler extends Thread
       this.socket = socket;
 }
 
-      private String submitRequest(){
+      private String submitRequest(String []requestData){
+     
+            String serverMessage;
+            String submission = "":
+            BookSubmission bookSubmission = new BookSubmission();
+            for (String line : requestData){
+                  String[] words = line.split(" ");
+                  
+                 switch(words[0]){
+                        case "ISBN":
+                        
+                        if(IsbnLookup(bookSubmission, words[1] != null){
+                              message = "ISBN already exists in directory";
+                              return message;
+                              }
+                         bookSubmission.setISBN(words[1]);
+                        break;
+                              
+                        case "TITLE":
+                              submission = line.substring(words[0].length()).trim();
+                              bookSubmission.setTITLE(submission);
+                        break;
+                        
+                        case "AUTHOR":
+                              submission = line.substring(words[0].length()).trim();
+                              bookSubmission = set.AUTHOR(submission)
+                        break;
+                        
+                        case "PUBLISHER":
+                             submission = line.substring(words[0].length()).trim();
+                             bookSubmission = setPUBLISHER(submission)
+                        break;
+                        
+                        case "YEAR":
+                               bookSubmission.setYEAR(Integer.parseInt(words[1]));
+
+                        break;
+                        }
+                        }
+                        message = "The entry with ISBN code " + ISBN+" has been added to the bibliography successfully.");
+                        bookSubmission.add(bookSubmission); 
+                        return message;  
+                   
       }
       private String updateRequest(){
       }
@@ -114,6 +156,7 @@ public class RequestHandler extends Thread
                         dout.flush(); 
                         din.flush()
                         }   
+                        
                 
                 din.close();
                 dout.close();
