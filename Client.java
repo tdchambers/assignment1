@@ -79,6 +79,7 @@ public class SocketClient
 	
 public class mainClient{
 	public static void main(String[] args){
+		
 	}
 	}
 	
