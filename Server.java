@@ -3,23 +3,29 @@ import java.io.*;
 import java.util.*;
 
 public class SocketServer extends Thread{
-      public ArrayList<BookSubmission> BookList = new ArrayList<BookSubmission>();
+      Private ArrayList<BookSubmission> bookSubmissions;
 
       private ServerSocket serverSocket;
       private int port;
       private boolean isRunning= false;
 
-    public SocketServer(int port){
-        this.port= port;
+    public ServerSocket(int port, ServerSocket serverSocket, ArrayList<BookSubmission> bookSubmissions ){
+        this.port = port;
+        this.serverSocket = serverSocket;
+        this.bookSubmissions = bookSubmissions; 
     }
     
     public synchronized void stopServer(){
         this.isRunning = false;
-        try {
-            this.serverSocket.close();
-        } catch (IOException e) {
-            throw new RuntimeException("Error closing server", e);
-        }
+         try{
+        din.close();
+        dout.close();
+        serverSocket.close(); 
+          }
+           catch( Exception e){
+                  System.out.println("Connection was not properly closed"); 
+                  e.printStackTrace();
+                  }
     }
 
     private void openServerSocket() {
@@ -53,27 +59,17 @@ public class SocketServer extends Thread{
         System.out.println("Server Stopped.") ;
     }
 
-}
-
-public class RequestHandler extends Thread
-{ 
-    private Socket socket;
-    RequestHandler(Socket socket)
-    {
-      this.socket = socket;
-}
-
       private String submitRequest(String []requestData){
      
             String serverMessage;
             String submission = "":
-            BookSubmission bookSubmission = new BookSubmission();
+            BookSubmission bookSubmissions = new BookSubmission();
             for (String line : requestData){
                   String[] words = line.split(" ");
                   
                  switch(words[0]){
                         case "ISBN":
-                        
+            
                         if(IsbnLookup(bookSubmission, words[1] != null){
                               message = "ISBN already exists in directory";
                               return message;
@@ -123,52 +119,61 @@ public class RequestHandler extends Thread
                   DataOutputStream dout = new DataOutputStream(socket.getOutputStream());
                   BufferedReader br = newBufferedReader(new InputStreamReader());
                  
-                  out.println("Enter a Request or "Stop" to end session: ");
-                  out.flush; 
+                  dout.println("Enter a Request or "Stop" to end session: ");
+                  dout.flush(); 
                   String line = "";
-                  while(!line.equals("Stop"){
-                        line = din.readLine();
-
-                        if(line.equals("SUBMIT"){
-                              return submitRequest();
-                           
-                        }
-                        else if(line.equals("UPDATE"){
-                              return updateRequest();
-
-                        }
-                        else if(line.equals("GET"){
-                              return getRequest();
-                        }
-                        elese if(line.equals("REMOVE"){
-                              return removeRequest(); 
-                        }
-                       else if(line.equals(""){
-                              dout.println("No request identified."
-                              dout.flush();
-                        }
-                        else{
-                              dout.println("Request not recognized."
-                              dout.flush();
+                  String serverMessage = "";
+                  String clientMessage = "";
+                  line = din.readLine(); 
+                        while(line!=null){
+                              while(!line.contains("\\EOF")){
+                                    clientMessage = clientMessage.concat(line+"\r\n");
+                                    line = din.readLine();
+                              }
                               
- 
+                              String request = clientMessage[0].trim();
+                              clientMessage = clientMessage.split(("\n").trim()+"\r\n\\EOF");
+                              if(request.equals("SUBMIT"){
+                                    serverMessage = submitRequest(clientMessage);
+
+                              }
+                              else if(request.equals("UPDATE"){
+                                    serverMessage = updateRequest(clientMessage);
+
+                              }
+                              else if(request.equals("GET"){
+                                    serverMessage = getRequest(clientMessage);
+                              }
+                              else if(request.equals("REMOVE"){
+                                    serverMessage = removeRequest(clientMessage);
+                              }
+                             else if(request.equals(""){
+                                    dout.println("No request identified.")
+                                    dout.flush();
+                              }
+                              else if (request.equals("Stop"){
+                                    dout.println("Stopping connection");
+                                    dout.flush();
+                                    stopServer();
+                              else{
+                                    dout.println("Request not recognized."
+                                    dout.flush()
+                                                 }
+                              
+                        dout.println(serverMessage);
+                        dout.flush(); 
                         dout.println("Enter another Request or "Stop" to end session: ");
                         dout.flush(); 
-                        din.flush()
+                        line = in.readLine(); 
+                                                 
                         }   
-                        
-                
-                din.close();
-                dout.close();
-                socket.close();
-                System.out.println("Connection has been closed");
-                }
-                catch( Exception e)
-                {
-                  System.out.println("Connection was not properly closed"); 
-                  e.printStackTrace();
+                            }catch (IOException e){
+                                  e.printStackTrace();
+                                     
                   }
-                  }
+                    System.out.println("Connection has been closed");
+                                                 }
+
                  
                   
  public class mainServer{
@@ -195,15 +200,3 @@ public class RequestHandler extends Thread
             
             
                 
-//running code
-SocketServer server = new SocketServer(port);
-new Thread(server).start();
-try {
-      Thread.sleep(50000);
-      }
-      catch(Exception e)
-      {
-            e.printStackTrace();
-            }
-            }
-server.stopServer(); 
