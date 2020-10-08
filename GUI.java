@@ -145,6 +145,16 @@ public class GUI extends JFrame{
 			
 		}
 		
+	}	
+	
+	public void ClearButtonHandler(ActionEvent e) {
+		IPtxt.setText("");
+		ISBNtxt.setText("");
+		TITLEtxt.setText("");
+		AUTHORtxt.setText("");
+		PUBLISHERtxt.setText("");
+		YEARtxt.setText("");
+
 	}
 
 	
@@ -156,6 +166,7 @@ public class GUI extends JFrame{
 
 		
 		SubmitButton.addActionListener(this::SubmitButtonHandler);
+		Clear.addActionListener(this::ClearButtonHandler);
 		this.setTitle("Server GUI");
 	
 		
